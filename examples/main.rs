@@ -8,8 +8,8 @@ fn main() {
 
     window.push(&d1);
 
-    let f = window.first().unwrap();
-    assert_eq!(f.dats, 0);
+    let first = window.first().unwrap();
+    assert_eq!(first.dats, 0);
 }
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
