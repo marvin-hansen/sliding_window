@@ -1,15 +1,13 @@
 
 use criterion::{Criterion, criterion_group};
 use sliding_window::vector_backed::SlidingWindow;
+use crate::benchmarks::fields::{MULT, SIZE};
 
 #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,
 }
 
-
-const SIZE: usize = 10;
-const MULT: usize = 1000;
 
 fn vector_backed_benchmark(criterion: &mut Criterion)
 {

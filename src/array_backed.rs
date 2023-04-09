@@ -1,23 +1,24 @@
-use generic_array::GenericArray;
-use generic_array::typenum::U5;
+use generic_array::{ArrayLength, GenericArray};
 
-
-pub struct SlidingWindow<'l, T>
+pub struct SlidingWindow<'l, T, N>
     where
-        T: PartialEq + Copy,
-        &'l T: Default
+       T: PartialEq + Copy,
+        &'l T: Default,
+        N: ArrayLength<&'l T>,
 {
-    arr: GenericArray<&'l T,U5>,
+    arr: GenericArray<&'l T,N>,
     size: usize,
     head: usize,
     tail: usize,
 }
 
 
-impl<'l, T> SlidingWindow<'l,T>
+impl<'l, T,N > SlidingWindow<'l, T, N>
     where
         T: PartialEq + Copy,
-        &'l T: Default
+        &'l T: Default,
+        N: ArrayLength<&'l T>,
+
 {
     pub fn new(size:usize) -> Self {
         Self {
@@ -116,6 +117,7 @@ impl<'l, T> SlidingWindow<'l,T>
 
         for i in 0..self.size - 1
         {
+
             self.arr[i] = self.arr[l - (self.size + i)];
         }
 
