@@ -1,7 +1,7 @@
 use criterion::{Criterion, criterion_group};
 
 use sliding_window::array_backed::SlidingWindow;
-use generic_array::typenum::U10000;
+use generic_array::typenum::U1000;
 
 use crate::benchmarks::fields::{SIZE};
 
@@ -17,13 +17,12 @@ impl Default for &Data
     }
 }
 
-
 fn array_backed_benchmark(criterion: &mut Criterion)
 {
     let d1 = Data{dats:0};
-    let mut w: SlidingWindow<Data, U10000> = SlidingWindow::new(SIZE);
+    let mut w: SlidingWindow<Data, U1000> = SlidingWindow::new(SIZE);
 
-    criterion.bench_function("vector_push", |bencher| {
+    criterion.bench_function("array_push", |bencher| {
         bencher.iter(||
             w.push(&d1)
         )

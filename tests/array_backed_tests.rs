@@ -69,7 +69,6 @@ fn test_filled() {
     window.push(& d);
     assert_eq!(window.filled(), true);
 
-    // rewinding fails here
     window.push(& d);
     assert_eq!(window.filled(), true);
 

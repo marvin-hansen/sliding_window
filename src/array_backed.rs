@@ -78,7 +78,6 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
 
         // push the value
         self.arr[self.tail] = value;
-       // self.arr.push(value);
 
         // check if the window is full,
         if self.tail - self.head > self.size
@@ -111,18 +110,37 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
         self.size
     }
 
+    pub fn vec(&self) -> Vec<&T>{
+        let mut vec = Vec::with_capacity(self.size);
+
+        for i in self.head+1..self.tail {
+            vec.push(self.arr[i]);
+        }
+
+        vec
+}
+
+    pub fn reverse_vec(&self) -> Vec<&T>{
+        let mut vec = Vec::with_capacity(self.size);
+
+        for i in self.head+1..self.tail {
+            vec.push(self.arr[i]);
+        }
+
+        vec
+    }
+
     fn rewind(&mut self)
     {
         let l = self.arr.len();
 
         for i in 0..self.size - 1
         {
-
-            self.arr[i] = self.arr[l - (self.size + i)];
+            let j = l - (self.size + i);
+            self.arr[i] = self.arr[j];
         }
 
         self.head = 0;
         self.tail = 0;
-        self.size = self.size - 1;
     }
 }

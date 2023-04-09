@@ -117,6 +117,5 @@ impl<'l,T> SlidingWindow<'l,T>
 
         self.head = 0;
         self.tail = 0;
-        self.size = self.size - 1;
     }
 }
