@@ -1,20 +1,27 @@
+use generic_array::GenericArray;
+use generic_array::typenum::U5;
+
 
 pub struct SlidingWindow<'l, T>
-    where T: PartialEq + Copy
+    where
+        T: PartialEq + Copy,
+        &'l T: Default
 {
-    arr: Vec<&'l T>,
+    arr: GenericArray<&'l T,U5>,
     size: usize,
     head: usize,
     tail: usize,
 }
 
-impl<'l,T> SlidingWindow<'l,T>
-    where T: PartialEq + Copy
+
+impl<'l, T> SlidingWindow<'l,T>
+    where
+        T: PartialEq + Copy,
+        &'l T: Default
 {
-    pub fn new(size:usize, multiple:usize) -> Self {
-        let capacity = size * multiple;
+    pub fn new(size:usize) -> Self {
         Self {
-            arr: Vec::with_capacity(capacity),
+            arr: GenericArray::default(),
             size,
             head: 0,
             tail: 0,
@@ -30,7 +37,6 @@ impl<'l,T> SlidingWindow<'l,T>
             false
         }
     }
-
 
     /// Returns the first element in the sliding window
     pub fn first(&self) -> Result<T, String>
@@ -52,7 +58,6 @@ impl<'l,T> SlidingWindow<'l,T>
         };
     }
 
-    /// Returns true if the window has reached its size
     pub fn filled(&self) -> bool
     {
         return if self.tail < self.size {
@@ -62,18 +67,17 @@ impl<'l,T> SlidingWindow<'l,T>
         };
     }
 
-    /// Adds a new element to the sliding window.
     pub fn push(&mut self, value: &'l T)
     {
         // if the array is full, rewind
-        if self.tail > 0 && self.tail == self.arr.capacity()
+        if self.tail > 0 && self.tail == self.arr.len()
         {
             self.rewind()
         }
 
         // push the value
-        // self.arr[self.tail] = value;
-        self.arr.push(value);
+        self.arr[self.tail] = value;
+       // self.arr.push(value);
 
         // check if the window is full,
         if self.tail - self.head > self.size
