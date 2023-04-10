@@ -72,10 +72,10 @@ fn test_filled() {
 
     // Rewinds b/c max capacity of 8 was reached
     window.push(& d);
-    assert_eq!(window.filled(), false);
+    assert_eq!(window.filled(), true);
 
     window.push(& d);
-    assert_eq!(window.filled(), false);
+    assert_eq!(window.filled(), true);
 }
 
 #[test]

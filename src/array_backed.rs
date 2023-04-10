@@ -18,7 +18,6 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
         T: PartialEq + Copy,
         &'l T: Default,
         N: ArrayLength<&'l T>,
-
 {
     pub fn new(size:usize) -> Self {
         Self {
@@ -30,6 +29,7 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
     }
 
     /// Returns true if the window is empty
+    #[inline(always)]
     pub fn empty(&self) -> bool
     {
         return if self.tail == 0 {
@@ -59,6 +59,7 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
         };
     }
 
+    #[inline(always)]
     pub fn filled(&self) -> bool
     {
         return if self.tail < self.size {
@@ -130,17 +131,14 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
         vec
     }
 
+    #[inline(always)]
     fn rewind(&mut self)
     {
-        let l = self.arr.len();
-
         for i in 0..self.size - 1
         {
-            let j = l - (self.size + i);
-            self.arr[i] = self.arr[j];
+            self.arr[i] = self.arr[self.head + i];
         }
-
         self.head = 0;
-        self.tail = 0;
+        self.tail = self.size;
     }
 }

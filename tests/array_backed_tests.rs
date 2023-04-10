@@ -16,7 +16,7 @@ impl Default for &Data {
 
 #[test]
 fn test_new() {
-    let  window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
+    let window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
     assert_eq!(window.empty(), true);
     assert_eq!(window.len(), SIZE);
 }
@@ -80,10 +80,10 @@ fn test_filled() {
 
     // Rewinds b/c max capacity of 8 was reached
     window.push(& d);
-    assert_eq!(window.filled(), false);
+    assert_eq!(window.filled(), true);
 
     window.push(& d);
-    assert_eq!(window.filled(), false);
+    assert_eq!(window.filled(), true);
 }
 
 #[test]

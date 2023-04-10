@@ -108,14 +108,11 @@ impl<'l,T> SlidingWindow<'l,T>
 
     fn rewind(&mut self)
     {
-        let l = self.arr.len();
-
         for i in 0..self.size - 1
         {
-            self.arr[i] = self.arr[l - (self.size + i)];
+            self.arr[i] = self.arr[self.head + i];
         }
-
         self.head = 0;
-        self.tail = 0;
+        self.tail = self.size;
     }
 }
