@@ -1,6 +1,6 @@
 # sliding_window
 
-This sliding window implementation over-allocates to trade space (memory) for copying complexity.
+This sliding window implementation over-allocates to trade space (memory) for time complexity by delaying expensive array copy operations.
 Specifically, for a sliding window of size N, the number of elements that can be hold without any array copy
 is approx C-1, where C is the total capacity defined as NxM with M as a multiple.   
 
