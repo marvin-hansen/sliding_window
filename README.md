@@ -48,3 +48,16 @@ then it's best to run an optimizer to find the best value for M that maximizes t
 Both implementations perform well on inserts with the array backed implementation 
 being about 1/3 faster than the vector backed implementation. Read operations are basically free O(1) since 
 the sliding window is just a slice over the backing data structure.
+
+
+## Author
+
+* Marvin Hansen
+* GPG key ID: 210D39BC
+* Github key ID: 369D5A0B210D39BC
+* GPG Fingerprint: 4B18 F7B2 04B9 7A72 967E 663E 369D 5A0B 210D 39BC
+
+## Licence
+
+* [MIT Licence](LICENSE)
+* Software is "as is" without any warranty. 
