@@ -19,6 +19,15 @@ impl<'l, T,N > SlidingWindow<'l, T, N>
         &'l T: Default,
         N: ArrayLength<&'l T>,
 {
+
+    /// Create a new sliding window with the size N as argument and max capacity C specified
+    /// as constant generic parameter.
+    /// This data structures trades off space and copying complexity;
+    /// the number of elements a sing windows can hold without array copying
+    /// is approx M-1, where M is the multiple. For example, if the window size N is 7,
+    /// and the max capacity C is 49 (7*7), then the sliding window can hold up to 48 elements
+    /// before rewind performs an array copy. After a rewinds, the window needs ro refill before
+    /// the entire window can be accessed hence call filled() to check if the window is ready.
     pub fn new(size:usize) -> Self {
         Self {
             arr: GenericArray::default(),
