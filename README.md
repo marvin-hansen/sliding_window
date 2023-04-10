@@ -16,9 +16,9 @@ Two different implementations are available:
 Take window size N and multiple M as arguments 
 
 See:
-[Benchmarks](benches/benchmarks/bench_vec.rs)
-[Example](examples/vector.rs)
-[Tests](tests/vector_backed_tests.rs)
+* [Benchmark](benches/benchmarks/bench_vec.rs)
+* [Example](examples/vector.rs)
+* [Test](tests/vector_backed_tests.rs)
 
 ## Array backed implementation
 
@@ -26,9 +26,9 @@ Takes window size N as argument but requires total capacity as generic parameter
 This is because static arrays requiring const generics as size parameter.
 
 See:
-[Benchmarks](benches/benchmarks/bench_arr.rs)
-[Example](examples/array.rs)
-[Tests](tests/array_backed_tests.rs)
+* [Benchmark](benches/benchmarks/bench_arr.rs)
+* [Example](examples/array.rs)
+* [Test](tests/array_backed_tests.rs)
 
 ## Configuration  
 
@@ -43,5 +43,5 @@ based on N and M.
 
 Both of these implementations perform well on inserts with the array backed implementation 
 being about 1/3 faster than the vector backed implementation. Read operations are basically free since 
-the sliding window is just a slice over the backing array or vector.
+the sliding window is just a slice over the backing data structure.
 
