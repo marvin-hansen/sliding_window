@@ -17,6 +17,7 @@ Take window size N and multiple M as arguments
 
 See:
 * [Benchmark](benches/benchmarks/bench_vec.rs)
+* [Code](src/vector_backed.rs)
 * [Example](examples/vector.rs)
 * [Test](tests/vector_backed_tests.rs)
 
@@ -27,6 +28,7 @@ This is because static arrays requiring const generics as size parameter.
 
 See:
 * [Benchmark](benches/benchmarks/bench_arr.rs)
+* [Code](src/array_backed.rs)
 * [Example](examples/array.rs)
 * [Test](tests/array_backed_tests.rs)
 
@@ -46,4 +48,3 @@ then it's best to run an optimizer to find the best value for M that maximizes t
 Both of these implementations perform well on inserts with the array backed implementation 
 being about 1/3 faster than the vector backed implementation. Read operations are basically free since 
 the sliding window is just a slice over the backing data structure.
-
