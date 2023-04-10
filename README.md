@@ -34,10 +34,12 @@ See:
 
 When N is reasonable small (1 ... 50), then only M determines the performance. In this case, a multiple of 100 to 1000, 
 gives an additional 30% to 50% performance boost over a comparable small multiplier (2 to 10). However, 
-when the total capacity exceeds a certain threshold, performance deteriorates because of increased CPU cache misses
+when the total capacity exceeds a certain threshold, performance deteriorates significantly because of increased CPU cache misses.
+This threshold depends on the actual CPU cache size and total system load.
 
-It is generally recommended to run benchmarks with various configurations to determine the best total capacity
-based on N and M.
+Therefore, it is generally recommended to run benchmarks with various configurations
+to determine the best total capacity based on N and M. When the window size N is known to be fixed, 
+then it's best to run an optimizer to find the best value for M that maximizes total write throughput. 
 
 ## Performance
 
