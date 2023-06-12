@@ -5,7 +5,7 @@ use generic_array::typenum::U1000;
 
 use crate::benchmarks::fields::{SIZE};
 
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+#[derive(Default, Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,
 }
@@ -24,7 +24,7 @@ fn array_backed_benchmark(criterion: &mut Criterion)
 
     criterion.bench_function("array_push", |bencher| {
         bencher.iter(||
-            w.push(&d1)
+            w.push(d1)
         )
     });
 }

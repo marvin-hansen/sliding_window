@@ -3,15 +3,9 @@ use generic_array::typenum::U8;
 
 const SIZE: usize = 4;
 
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+#[derive(Default, Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,
-}
-
-impl Default for &Data {
-    fn default() -> Self {
-        &Data { dats: 0 }
-    }
 }
 
 fn main() {
@@ -21,17 +15,17 @@ fn main() {
     assert_eq!(window.filled(), false);
     println!("Filled {:?}", window.filled());
 
-    window.push(&Data{dats:0});
+    window.push(Data{dats:0});
     assert_eq!(window.filled(), false);
 
-    window.push(& Data{dats:1});
+    window.push( Data{dats:1});
     assert_eq!(window.filled(), false);
 
-    window.push(& Data{dats:2});
+    window.push( Data{dats:2});
     assert_eq!(window.filled(), false);
 
     // Filled
-    window.push(& Data{dats:3});
+    window.push( Data{dats:3});
     assert_eq!(window.filled(), true);
     println!("Filled {:?}", window.filled());
 
@@ -50,19 +44,19 @@ fn main() {
     println!("Last {:?}", data.dats);
 
     // Filled
-    window.push(& Data{dats:4});
+    window.push( Data{dats:4});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:5});
+    window.push(Data{dats:5});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:6});
+    window.push(Data{dats:6});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:7});
+    window.push( Data{dats:7});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:8});
+    window.push(Data{dats:8});
     assert_eq!(window.filled(), true);
 
     let res = window.first();

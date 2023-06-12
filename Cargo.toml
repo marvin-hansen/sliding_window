@@ -1,15 +1,17 @@
 [package]
 name = "sliding_window"
-version = "0.1.0"
+authors = ["Marvin Hansen <marvin.hansen@gmail.com>", ]
 edition = "2021"
-
+repository = "https://github.com/marvin-hansen/sliding_window"
+rust-version = "1.65"
+version = "0.2.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 generic-array = "0.14.7"
 
 [dev-dependencies]
-criterion = { version = "0.4", features = ["html_reports"] }
+criterion = { version = "0.5.1", features = ["html_reports"] }
 
 
 [[bench]]

@@ -11,7 +11,7 @@ pub struct SlidingWindow<'l, T>
 impl<'l,T> SlidingWindow<'l,T>
     where T: PartialEq + Copy
 {
-    pub fn new(size:usize, multiple:usize) -> Self {
+    pub fn new(size: usize, multiple: usize) -> Self {
         let capacity = size * multiple;
         Self {
             arr: Vec::with_capacity(capacity),
@@ -19,47 +19,6 @@ impl<'l,T> SlidingWindow<'l,T>
             head: 0,
             tail: 0,
         }
-    }
-
-    /// Returns true if the window is empty
-    pub fn empty(&self) -> bool
-    {
-        return if self.tail == 0 {
-            true
-        } else {
-            false
-        }
-    }
-
-
-    /// Returns the first element in the sliding window
-    pub fn first(&self) -> Result<T, String>
-    {
-        return if self.tail != 0 {
-            Ok(*self.arr[self.head])
-        } else {
-            Err(format!("Array is empty. Add some elements to the array first"))
-        }
-    }
-
-    /// Returns the last element in the sliding window
-    pub fn last(&self) -> Result<T, String>
-    {
-        return if self.filled() {
-            Ok(*self.arr[self.tail-1])
-        } else {
-            Err(format!("Array is not yet filled. Add some elements to the array first"))
-        };
-    }
-
-    /// Returns true if the window has reached its size
-    pub fn filled(&self) -> bool
-    {
-        return if self.tail < self.size {
-            false
-        } else {
-            true
-        };
     }
 
     /// Adds a new element to the sliding window.
@@ -86,26 +45,83 @@ impl<'l,T> SlidingWindow<'l,T>
         self.tail += 1;
     }
 
-    /// Returns the sliding window as a slice.
-    pub fn slice(&self) -> &[&T]
+    /// Returns true if the window is empty
+    #[inline(always)]
+    pub fn empty(&self) -> bool
     {
-        &self.arr[self.head+1..self.tail]
+        return if self.tail == 0 {
+            true
+        } else {
+            false
+        }
     }
 
-    /// Returns the sliding window with its items in reverse order.
-    pub fn reverse_slice(&mut self) -> &[&T]
+    /// Returns the first element in the sliding window
+    #[inline(always)]
+    pub fn first(&self) -> Result<T, String>
     {
-        let s = &mut self.arr[self.head+1..self.tail];
-        s.reverse();
-        s
+        return if self.tail != 0 {
+            Ok(*self.arr[self.head])
+        } else {
+            Err(format!("Array is empty. Add some elements to the array first"))
+        }
+    }
+
+    /// Returns the last element in the sliding window
+    #[inline(always)]
+    pub fn last(&self) -> Result<T, String>
+    {
+        return if self.filled() {
+            Ok(*self.arr[self.tail-1])
+        } else {
+            Err(format!("Array is not yet filled. Add some elements to the array first"))
+        };
+    }
+
+    /// Returns true if the window has reached its size
+    #[inline(always)]
+    pub fn filled(&self) -> bool
+    {
+        return if self.tail < self.size {
+            false
+        } else {
+            true
+        };
     }
 
     /// Returns the size of the moving window,
+    #[inline(always)]
     pub fn len(&self) -> usize
     {
         self.size
     }
 
+    /// Returns the sliding window as a slice.
+    #[inline(always)]
+    pub fn slice(&self) -> &[&T]
+    {
+        &self.get_slice()
+    }
+
+    /// Returns the sliding window as a vector.
+    #[inline(always)]
+    pub fn vec(&self) -> Vec<&T> {
+        self.get_slice().to_vec()
+    }
+
+    #[inline(always)]
+    fn get_slice(&self) -> &[&T]
+    {
+        if self.tail > self.size
+        {
+            // Adjust offset in case the window is larger than the slice.
+            &self.arr[self.head + 1..self.tail]
+        } else {
+            &self.arr[self.head..self.tail]
+        }
+    }
+
+    #[inline(always)]
     fn rewind(&mut self)
     {
         for i in 0..self.size - 1
