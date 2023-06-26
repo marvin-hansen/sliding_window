@@ -2,42 +2,40 @@
  * Copyright (c) 2023. Marvin Hansen <marvin.hansen@gmail.com> All rights reserved.
  */
 
-use generic_array::{ArrayLength, GenericArray};
-use crate::storage::{Storage};
+use crate::storage::Storage;
 
-pub struct GenericArrayStorage<T, N>
+pub struct ArrayStorage<T, const SIZE: usize, const CAPACITY: usize>
     where
-        T: PartialEq + Copy + Default ,
-        N: ArrayLength<T>,
+        T: PartialEq + Copy + Default,
+        [T; CAPACITY]: Sized,
 {
-    arr: GenericArray<T, N>,
+    arr: [T; CAPACITY],
     size: usize,
     head: usize,
     tail: usize,
 }
 
-impl<T, N> GenericArrayStorage<T, N>
+impl<T, const SIZE: usize, const CAPACITY: usize> ArrayStorage<T, SIZE, CAPACITY>
     where
         T: PartialEq + Copy + Default,
-        N: ArrayLength<T>,
+        [T; CAPACITY]: Sized,
 {
-    pub fn new(size: usize) -> Self
+    pub fn new() -> Self
     {
-        Self
-        {
-            arr: GenericArray::default(),
-            size,
+        Self {
+            arr: [T::default(); CAPACITY],
+            size: SIZE,
             head: 0,
             tail: 0,
         }
     }
 }
 
-impl<T, N> Storage<T> for GenericArrayStorage<T, N>
+
+impl<T, const SIZE: usize, const CAPACITY: usize> Storage<T> for ArrayStorage<T, SIZE, CAPACITY>
     where
         T: PartialEq + Copy + Default,
-        N: ArrayLength<T>,
-
+        [T; SIZE]: Sized,
 {
     fn push(&mut self, value: T) {
         // if the array is full, rewind
@@ -71,7 +69,7 @@ impl<T, N> Storage<T> for GenericArrayStorage<T, N>
             Ok(self.arr[self.head])
         } else {
             Err(format!("Array is empty. Add some elements to the array first"))
-        }
+        };
     }
 
     fn last(&self) -> Result<T, String> {
@@ -82,19 +80,15 @@ impl<T, N> Storage<T> for GenericArrayStorage<T, N>
         };
     }
 
-    #[inline(always)]
-    fn tail(&self) -> usize{
+    fn tail(&self) -> usize {
         self.tail
     }
 
-    #[inline(always)]
-    fn size(&self) -> usize{
+    fn size(&self) -> usize {
         self.size
     }
 
-    #[inline(always)]
-    fn get_slice(&self) -> &[T]
-    {
+    fn get_slice(&self) -> &[T] {
         if self.tail > self.size
         {
             // Adjust offset in case the window is larger than the slice.

@@ -1,7 +1,6 @@
 use std::marker::PhantomData;
-use generic_array::ArrayLength;
 use crate::storage::{Storage};
-use crate::storage_gen_arr::GenericArrayStorage;
+use crate::storage_array::ArrayStorage;
 use crate::storage_vec::VectorStorage;
 
 pub fn new_with_vector_storage<T: PartialEq + Copy + Default >(
@@ -15,13 +14,15 @@ pub fn new_with_vector_storage<T: PartialEq + Copy + Default >(
     )
 }
 
-pub fn new_with_generic_array_storage<T: PartialEq + Copy + Default ,  N: ArrayLength<T>,>(
-    size: usize,
+pub fn new_with_array_storage<T: PartialEq + Copy + Default ,  const SIZE: usize,const CAPACITY: usize>(
 )
-    -> SlidingWindow<GenericArrayStorage<T, N>, T>
+    -> SlidingWindow<ArrayStorage<T, SIZE, CAPACITY>, T>
 {
+
+    assert!(CAPACITY > SIZE);
+
     SlidingWindow::with_storage(
-        GenericArrayStorage::new(size)
+        ArrayStorage::new()
     )
 }
 
