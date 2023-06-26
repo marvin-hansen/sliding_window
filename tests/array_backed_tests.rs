@@ -4,7 +4,8 @@
 
 use generic_array::typenum::U8;
 
-use sliding_window::array_backed::SlidingWindow;
+use sliding_window::sliding_window::{new_with_generic_array_storage, SlidingWindow};
+use sliding_window::storage_gen_arr::GenericArrayStorage;
 
 const SIZE: usize = 4;
 
@@ -13,29 +14,32 @@ pub struct Data {
     dats: i32,
 }
 
+fn get_sliding_window() -> SlidingWindow<GenericArrayStorage<Data, U8>, Data> {
+    new_with_generic_array_storage(SIZE)
+}
 
 #[test]
 fn test_new() {
-    let window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
+    let window = get_sliding_window();
     assert_eq!(window.empty(), true);
-    assert_eq!(window.len(), SIZE);
+    assert_eq!(window.size(), SIZE);
 }
 
 #[test]
 fn test_empty() {
     let d1 = Data { dats: 0 };
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
+    let mut window = get_sliding_window();
     assert_eq!(window.empty(), true);
 
     window.push(d1);
-    assert_eq!(window.len(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.empty(), false);
 }
 
 #[test]
 fn test_push() {
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
     assert_eq!(window.empty(), true);
 
@@ -48,9 +52,9 @@ fn test_push() {
 #[test]
 fn test_filled() {
     let d = Data { dats: 0 };
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
+    let mut window = get_sliding_window();
 
-    assert_eq!(window.len(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     window.push(d);
@@ -89,8 +93,8 @@ fn test_filled() {
 #[test]
 fn test_first() {
     let d = Data { dats: 0 };
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     let res = window.first();
@@ -108,8 +112,8 @@ fn test_first() {
 
 #[test]
 fn test_last() {
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     let res = window.last();
@@ -140,8 +144,8 @@ fn test_last() {
 
 #[test]
 fn test_slice() {
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     let d = Data { dats: 0 };
@@ -176,9 +180,9 @@ fn test_slice() {
 #[test]
 fn test_vec() {
     let d1 = Data { dats: 0 };
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
+    let mut window = get_sliding_window();
 
-    assert_eq!(window.len(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     window.push(d1);
@@ -211,8 +215,8 @@ fn test_vec() {
 #[test]
 fn test_arr() {
     let d1 = Data { dats: 0 };
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     window.push(d1);

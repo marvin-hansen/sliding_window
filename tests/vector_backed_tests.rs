@@ -1,4 +1,5 @@
-use sliding_window::vector_backed::SlidingWindow;
+use sliding_window::sliding_window::{new_with_vector_storage, SlidingWindow};
+use sliding_window::storage_vec::VectorStorage;
 
 const SIZE: usize = 4;
 const MULT: usize = 2;
@@ -8,147 +9,157 @@ pub struct Data {
     dats: i32,
 }
 
+fn get_sliding_window() -> SlidingWindow<VectorStorage<Data>, Data> {
+    new_with_vector_storage(SIZE, MULT)
+}
+
 #[test]
 fn test_new() {
-    let  window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);
+    let window = get_sliding_window();
     assert_eq!(window.empty(), true);
-    assert_eq!(window.len(), SIZE);
+    assert_eq!(window.size(), SIZE);
 }
 
 #[test]
 fn test_empty() {
-    let d1 = Data{dats:0};
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);
+    let d1 = Data { dats: 0 };
+    let mut window = get_sliding_window();
     assert_eq!(window.empty(), true);
 
-    window.push(&d1);    assert_eq!(window.len(), SIZE);
+    window.push(d1);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.empty(), false);
 }
 
 #[test]
 fn test_push() {
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
     assert_eq!(window.empty(), true);
 
-    let d1 = Data{dats:0};
-    window.push(&d1);
+    let d1 = Data { dats: 0 };
+    window.push(d1);
     assert_eq!(window.filled(), false);
     assert_eq!(window.empty(), false);
 }
 
 #[test]
 fn test_filled() {
-    let d = Data{dats:0};
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);    assert_eq!(window.len(), SIZE);
-    
-    assert_eq!(window.len(), SIZE);
+    let d = Data { dats: 0 };
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
+
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
-    window.push(&d);
+    window.push(d);
     assert_eq!(window.filled(), false);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), false);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), false);
 
     // Filled
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
     // Rewinds b/c max capacity of 8 was reached
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
-    window.push(& d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 }
 
 #[test]
 fn test_first() {
-    let d = Data{dats:0};
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);    assert_eq!(window.len(), SIZE);
-    assert_eq!(window.len(), SIZE);
+    let d = Data { dats: 0 };
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     let res = window.first();
     assert_eq!(res.is_err(), true);
 
-    window.push(&d);
+    window.push(d);
     assert_eq!(window.filled(), false);
 
     let res = window.first();
     assert_eq!(res.is_ok(), true);
 
     let data = res.unwrap();
-    assert_eq!(data.dats,0);
+    assert_eq!(data.dats, 0);
 }
 
 
 #[test]
 fn test_last() {
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);    assert_eq!(window.len(), SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     let res = window.last();
     assert_eq!(res.is_err(), true);
 
-    let d = Data{dats:0};
-    window.push(&d);
-    window.push(&d);
-    window.push(&d);
-    window.push(&d);
+    let d = Data { dats: 0 };
+    window.push(d);
+    window.push(d);
+    window.push(d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
     let res = window.first();
     assert_eq!(res.is_ok(), true);
 
     let data = res.unwrap();
-    assert_eq!(data.dats,0);
+    assert_eq!(data.dats, 0);
 
-    let d = Data{dats:42};
-    window.push(&d);
+    let d = Data { dats: 42 };
+    window.push(d);
 
     let res = window.last();
     assert_eq!(res.is_ok(), true);
 
     let data = res.unwrap();
-    assert_eq!(data.dats,42);
+    assert_eq!(data.dats, 42);
 }
 
 
 #[test]
 fn test_slice() {
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);    assert_eq!(window.len(), SIZE);
-    assert_eq!(window.len(), SIZE);
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
-    let d = Data{dats:0};
-    window.push(&d);
-    window.push(&d);
-    window.push(&d);
-    window.push(&d);
+    let d = Data { dats: 0 };
+    window.push(d);
+    window.push(d);
+    window.push(d);
+    window.push(d);
     assert_eq!(window.filled(), true);
 
-    let d = Data{dats:42};
-    window.push(&d);
+    let d = Data { dats: 42 };
+    window.push(d);
 
-    let slice = window.slice();
+    let slice = window.slice().expect("Failed to get slice");
     assert_eq!(slice.len(), SIZE);
 
     assert_eq!(slice[0].dats, 0);
@@ -160,10 +171,11 @@ fn test_slice() {
 
 #[test]
 fn test_vec() {
-    let d1 = &Data{dats:0};
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(SIZE,MULT);    assert_eq!(window.len(), SIZE);
+    let d1 = Data { dats: 0 };
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
 
-    assert_eq!(window.len(), SIZE);
+    assert_eq!(window.size(), SIZE);
     assert_eq!(window.filled(), false);
 
     window.push(d1);
@@ -172,7 +184,7 @@ fn test_vec() {
     window.push(d1);
     assert_eq!(window.filled(), true);
 
-    let d2 = &Data { dats: 42 };
+    let d2 = Data { dats: 42 };
     window.push(d2);
 
     let e1 = window.first().unwrap();
@@ -181,7 +193,7 @@ fn test_vec() {
     let e2 = window.last().unwrap();
     assert_eq!(e2.dats, d2.dats);
 
-    let v = window.vec();
+    let v = window.vec().unwrap();
     assert_eq!(v.len(), SIZE);
 
     let e1 = window.first().unwrap();
