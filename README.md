@@ -17,7 +17,7 @@ Take window size N and multiple M as arguments
 
 See:
 * [Benchmark](benches/benchmarks/bench_vec.rs)
-* [Code](src/vector_backed.rs)
+* [Code](src/storage_vec.rs)
 * [Example](examples/vector.rs)
 * [Test](tests/vector_backed_tests.rs)
 
@@ -28,7 +28,7 @@ This is because static arrays requiring const generics as size parameter.
 
 See:
 * [Benchmark](benches/benchmarks/bench_arr.rs)
-* [Code](src/array_backed.rs)
+* [Code](src/storage_gen_arr.rs)
 * [Example](examples/array.rs)
 * [Test](tests/array_backed_tests.rs)
 

@@ -1,28 +1,33 @@
-use sliding_window::vector_backed::SlidingWindow;
+use sliding_window::sliding_window::{new_with_vector_storage, SlidingWindow};
+use sliding_window::storage_vec::VectorStorage;
 
-#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq)]
+#[derive(Default, Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,
 }
 
-fn main() {
+fn get_sliding_window() -> SlidingWindow<VectorStorage<Data>, Data> {
+    new_with_vector_storage(SIZE, MULT)
+}
 
-    let mut window: SlidingWindow<Data> = SlidingWindow::new(2,4);
+fn main()
+{
+    let mut window = get_sliding_window();
     assert_eq!(window.empty(), true);
     assert_eq!(window.filled(), false);
     println!("Filled {:?}", window.filled());
 
-    window.push(&Data{dats:0});
+    window.push(Data{dats:0});
     assert_eq!(window.filled(), false);
 
-    window.push(& Data{dats:1});
+    window.push(Data{dats:1});
     assert_eq!(window.filled(), false);
 
-    window.push(& Data{dats:2});
+    window.push( Data{dats:2});
     assert_eq!(window.filled(), false);
 
     // Filled
-    window.push(& Data{dats:3});
+    window.push( Data{dats:3});
     assert_eq!(window.filled(), true);
     println!("Filled {:?}", window.filled());
 
@@ -41,19 +46,19 @@ fn main() {
     println!("Last {:?}", data.dats);
 
     // Filled
-    window.push(& Data{dats:4});
+    window.push(Data{dats:4});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:5});
+    window.push( Data{dats:5});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:6});
+    window.push(Data{dats:6});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:7});
+    window.push(Data{dats:7});
     assert_eq!(window.filled(), true);
 
-    window.push(& Data{dats:8});
+    window.push( Data{dats:8});
     assert_eq!(window.filled(), true);
 
     let res = window.first();

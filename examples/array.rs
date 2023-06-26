@@ -1,5 +1,6 @@
-use sliding_window::array_backed::SlidingWindow;
 use generic_array::typenum::U8;
+use sliding_window::sliding_window::{new_with_generic_array_storage, SlidingWindow};
+use sliding_window::storage_gen_arr::GenericArrayStorage;
 
 const SIZE: usize = 4;
 
@@ -8,9 +9,13 @@ pub struct Data {
     dats: i32,
 }
 
+fn get_sliding_window() -> SlidingWindow<GenericArrayStorage<Data, U8>, Data> {
+    new_with_generic_array_storage(SIZE)
+}
+
 fn main() {
 
-    let mut window: SlidingWindow<Data, U8> = SlidingWindow::new(SIZE);
+    let mut window = get_sliding_window();
     assert_eq!(window.empty(), true);
     assert_eq!(window.filled(), false);
     println!("Filled {:?}", window.filled());
