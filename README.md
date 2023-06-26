@@ -9,7 +9,7 @@ means the sliding window can hold up to 48 elements before a rewind performs an 
 
 Two different implementations are available:
 1) Vector backed
-2) Generic Array backed
+2) Array backed
  
 ## Vector backed implementation
 
@@ -23,12 +23,12 @@ See:
 
 ## Array backed implementation
 
-Takes window size N as argument but requires total capacity as generic parameter.
-This is because static arrays requiring const generics as size parameter.
+Takes window size SIZE and a CAPACITY as generic parameters.
+This is because static arrays requiring const generics parameter.
 
 See:
 * [Benchmark](benches/benchmarks/bench_arr.rs)
-* [Code](src/storage_gen_arr.rs)
+* [Code](src/storage_array.rs)
 * [Example](examples/array.rs)
 * [Test](tests/array_backed_tests.rs)
 
