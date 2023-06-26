@@ -1,6 +1,9 @@
 use sliding_window::sliding_window::{new_with_vector_storage, SlidingWindow};
 use sliding_window::storage_vec::VectorStorage;
 
+const SIZE: usize = 4;
+const MULT: usize = 2;
+
 #[derive(Default, Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,

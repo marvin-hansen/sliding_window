@@ -1,16 +1,16 @@
-use generic_array::typenum::U8;
-use sliding_window::sliding_window::{new_with_generic_array_storage, SlidingWindow};
-use sliding_window::storage_gen_arr::GenericArrayStorage;
+use sliding_window::sliding_window::{new_with_array_storage, SlidingWindow};
+use sliding_window::storage_array::ArrayStorage;
 
 const SIZE: usize = 4;
+const CAPACITY: usize = 1200;
 
 #[derive(Default, Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,
 }
 
-fn get_sliding_window() -> SlidingWindow<GenericArrayStorage<Data, U8>, Data> {
-    new_with_generic_array_storage(SIZE)
+fn get_sliding_window() -> SlidingWindow<ArrayStorage<Data, SIZE, CAPACITY>, Data> {
+    new_with_array_storage()
 }
 
 fn main() {

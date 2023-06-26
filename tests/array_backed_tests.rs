@@ -2,27 +2,20 @@
  * Copyright (c) 2023. Marvin Hansen <marvin.hansen@gmail.com> All rights reserved.
  */
 
-use generic_array::typenum::U8;
 
-use sliding_window::sliding_window::{new_with_generic_array_storage, SlidingWindow};
-use sliding_window::storage_gen_arr::GenericArrayStorage;
+use sliding_window::sliding_window::{new_with_array_storage, SlidingWindow};
+use sliding_window::storage_array::ArrayStorage;
 
 const SIZE: usize = 4;
+const CAPACITY: usize = 1200;
 
 #[derive(Default, Debug, Copy, Clone, Hash, Eq, PartialEq)]
 pub struct Data {
     dats: i32,
 }
 
-fn get_sliding_window() -> SlidingWindow<GenericArrayStorage<Data, U8>, Data> {
-    new_with_generic_array_storage(SIZE)
-}
-
-#[test]
-fn test_new() {
-    let window = get_sliding_window();
-    assert_eq!(window.empty(), true);
-    assert_eq!(window.size(), SIZE);
+fn get_sliding_window() -> SlidingWindow<ArrayStorage<Data, SIZE, CAPACITY>, Data> {
+    new_with_array_storage()
 }
 
 #[test]
@@ -48,6 +41,60 @@ fn test_push() {
     assert_eq!(window.filled(), false);
     assert_eq!(window.empty(), false);
 }
+
+#[test]
+fn test_first() {
+    let d = Data { dats: 0 };
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
+    assert_eq!(window.filled(), false);
+
+    let res = window.first();
+    assert_eq!(res.is_err(), true);
+
+    window.push(d);
+    assert_eq!(window.filled(), false);
+
+    let res = window.first();
+    assert_eq!(res.is_ok(), true);
+
+    let data = res.unwrap();
+    assert_eq!(data.dats, 0);
+}
+
+
+#[test]
+fn test_last() {
+    let mut window = get_sliding_window();
+    assert_eq!(window.size(), SIZE);
+    assert_eq!(window.filled(), false);
+
+    let res = window.last();
+    assert_eq!(res.is_err(), true);
+
+    let d = Data { dats: 0 };
+    window.push(d);
+    window.push(d);
+    window.push(d);
+    window.push(d);
+    assert_eq!(window.filled(), true);
+
+    let res = window.first();
+    assert_eq!(res.is_ok(), true);
+
+    let data = res.unwrap();
+    assert_eq!(data.dats, 0);
+
+    let d = Data { dats: 42 };
+    window.push(d);
+
+    let res = window.last();
+    assert_eq!(res.is_ok(), true);
+
+    let data = res.unwrap();
+    assert_eq!(data.dats, 42);
+}
+
 
 #[test]
 fn test_filled() {
@@ -88,58 +135,6 @@ fn test_filled() {
 
     window.push(d);
     assert_eq!(window.filled(), true);
-}
-
-#[test]
-fn test_first() {
-    let d = Data { dats: 0 };
-    let mut window = get_sliding_window();
-    assert_eq!(window.size(), SIZE);
-    assert_eq!(window.filled(), false);
-
-    let res = window.first();
-    assert_eq!(res.is_err(), true);
-
-    window.push(d);
-    assert_eq!(window.filled(), false);
-
-    let res = window.first();
-    assert_eq!(res.is_ok(), true);
-
-    let data = res.unwrap();
-    assert_eq!(data.dats, 0);
-}
-
-#[test]
-fn test_last() {
-    let mut window = get_sliding_window();
-    assert_eq!(window.size(), SIZE);
-    assert_eq!(window.filled(), false);
-
-    let res = window.last();
-    assert_eq!(res.is_err(), true);
-
-    let d = Data { dats: 0 };
-    window.push(d);
-    window.push(d);
-    window.push(d);
-    window.push(d);
-    assert_eq!(window.filled(), true);
-
-    let res = window.first();
-    assert_eq!(res.is_ok(), true);
-
-    let data = res.unwrap();
-    assert_eq!(data.dats, 0);
-
-    let d = Data { dats: 42 };
-    window.push(d);
-
-    let res = window.last();
-    assert_eq!(res.is_ok(), true);
-
-    let data = res.unwrap();
-    assert_eq!(data.dats, 42);
 }
 
 #[test]
